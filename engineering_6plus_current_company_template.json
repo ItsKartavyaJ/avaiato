@@ -1,0 +1,74 @@
+{
+  "dsl": {
+    "offset": 0,
+    "limit": 250,
+    "filters": [
+      {
+        "AND": [
+          {
+            "linkedinID": {
+              "operation": "notin",
+              "value": ["abc123", "xyz789"]
+            }
+          },
+          {
+            "country": {
+              "operation": "in",
+              "value": ["India", "United States"]
+            }
+          },
+          {
+            "experienceList.startDate": {
+              "operation": "gte",
+              "value": "2019-02-01T00:00:00.000Z"
+            }
+          },
+          {
+            "AND": [
+              {
+                "experienceList.companyID": {
+                  "operation": "in",
+                  "value": ["company_1"]
+                }
+              },
+              {
+                "experienceList.endDate": {
+                  "operation": "eq",
+                  "value": null
+                }
+              },
+              {
+                "experienceList.positionList['endDate']": {
+                  "operation": "eq",
+                  "value": null
+                }
+              },
+              {
+                "experienceList.positionList['department']": {
+                  "operation": "eq",
+                  "value": "ENGINEERING"
+                }
+              },
+              {
+                "OR": [
+                  {
+                    "experienceList.positionList['title']": {
+                      "operation": "fts",
+                      "value": ["backend", "platform"]
+                    }
+                  },
+                  {
+                    "experienceList.positionList['description']": {
+                      "operation": "fts",
+                      "value": ["backend", "platform"]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
