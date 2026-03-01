@@ -22,13 +22,14 @@ import unicodedata
 #       "Display Name": { "segment_key": { "jt": "...", "sen": "...", "loc": "...", "search_type": "..." }, ... }
 # =============================================================================
 
-from mrp import mrp_dict          # ← your existing mrp_dict
+from segments import mrp_dict ,arp_dict
 
 # Add more dicts below — just follow the same pattern:
 # from my_other_file import another_dict
 
 SEGMENT_LIBRARIES: dict[str, dict] = {
     "MRP": mrp_dict,
+    "ARPIT": arp_dict,
     # "Custom Pharma": another_dict,   ← uncomment & add more as needed
 }
 
@@ -128,14 +129,16 @@ def split_csv_values(value):
     return [p.strip() for p in str(value).split(",") if p.strip()]
 
 
-def fts_terms_clause(field, values):
+def keyword_or_phrase_search(field, values):
     clauses = []
     for raw in values:
         words = raw.split()
         if len(words) == 1:
             clauses.append({field: {"operation": "fts", "value": raw}})
         else:
-            clauses.append({"AND": [{field: {"operation": "fts", "value": w}} for w in words]})
+            clauses.append({"AND": {field: {"operation": "textcontains", "value":raw}}
+                                    # for w in words
+                                    })
     return {"OR": clauses}
 
 
@@ -161,13 +164,13 @@ def build_person_search_dsl(*, offset, limit, company_id, segment_terms, exclude
 
     if segment_terms.jobs:
         if segment_terms.search_type == "only_jt":
-            text_constraints.append({"AND": [fts_terms_clause(FIELD_MAP["title"], segment_terms.jobs), *exp]})
+            text_constraints.append({"AND": [keyword_or_phrase_search(FIELD_MAP["title"], segment_terms.jobs), *exp]})
         else:
-            or_clauses = [fts_terms_clause(FIELD_MAP[f], segment_terms.jobs) for f in segment_terms.search_fields if f in FIELD_MAP]
+            or_clauses = [keyword_or_phrase_search(FIELD_MAP[f], segment_terms.jobs) for f in segment_terms.search_fields if f in FIELD_MAP]
             text_constraints.append({"AND": [{"OR": or_clauses}, *exp]})
 
     if segment_terms.seniority:
-        text_constraints.append({"AND": [fts_terms_clause(FIELD_MAP["title"], segment_terms.seniority), *exp]})
+        text_constraints.append({"AND": [keyword_or_phrase_search(FIELD_MAP["title"], segment_terms.seniority), *exp]})
 
     if text_constraints:
         filters.append({"AND": text_constraints})

@@ -18,7 +18,7 @@ from urllib3.util.retry import Retry
 
 from jsontocsv import json_dir_to_csv
 
-from mrp import mrp_dict
+from segments import mrp_dict
 
 import re
 import unicodedata

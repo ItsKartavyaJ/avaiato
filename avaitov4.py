@@ -18,7 +18,7 @@ from urllib3.util.retry import Retry
 
 from jsontocsv import json_dir_to_csv
 
-from mrp import mrp_dict
+from segments import mrp_dict ,arp_dict
 
 import re
 import unicodedata
@@ -34,35 +34,7 @@ MAX_OFFSET = 10000
 # while "all" will apply to title, description, headline, and about fields
 INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\ARPIT Copy of BFSI Pintel Accounts - Arpit - accounts.csv"
 # Chief Sales Officer, CSO, Chief Revenue O"fficer, CRO, Chief Commercial Officer, CCO, Chief Partnerships Officer, Chief Business Development Officer
-SEGMENTS: dict[str, dict[str, str]] = {
-    "k1":{
-        "jt":"Learning and Development, Learning & Development, l&d, learning officer, training, training and development, training & development, corporate training, professional development, Talent development, regional training, learning program, organizational development, organisational development, technical training, knoweldge, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Information Officer, technology officer, information technology, information technology officer, technology operations, information technology application, system operations, information technology operations, business applications, Information systems,process, Business process improvement, Technology Transformation, Process excellence, business consulting, business excellence, business improvement, management consulting, business integration, process management, process improvement, integration, strategy and digital initiatives,Enterprise Application, Business Systems, IT Applications, Saas Applications, Application Services, Business Applications,Change management, Technology Change, Digital Change, Digital Adoption, Organizational Change,DAP, Digital Adoption, User adoption, Walkme, Pendo, Software adoption, Technology Adoption, Workforce enablement, Apty, Appcues, Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation, S4 HANA, Salesforce, OCM, Organizational Change Management, Digital Adoption Platform, product enablement, platform enablement, technology enablement, digital enablement, change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement,Salesforce, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, pendo, apty, walkme, Technology transformation,Claims, Claims Operations, Claims L&D, Claims Technology, Claims Transformation, Claims Platform, Guidewire ClaimCenter, DuckCreek, Guidewire Cloud, Shared Service, Underwriting, Underwriting Operations, Underwriting L&D, Underwriting Technology, Underwriting Transformation, Underwriting Platform, Guidewire PolicyCenter, DuckCreek, Guidewire Cloud, Shared Service, UW Quality & Compliance, Guidewire BillingCenter, Billing Admin, Duck Creek, Sapiens, guidewire pronavigator, duckcreek, guidewire, guidewire pronavigator, Walkme, Dap, Digital Adoption Platform, Sap, SAP, Pendo, Enablenow,Salesforce, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, pendo, apty, walkme",
-        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head",
-        "loc":"Mexico, Canada, United States",
-        "search_type":"only_jt"
-    },
-     "k2":{
-        "jt":"IT, Information Technology, IT infrastructure, IT service delivery, IT training, IT Enablement, IT Systems, enterprise systems, technology training, IT Implementation, IT Systems Deployment, IT Transition, IT Metrics and Reporting,Learning and Development, Learning & Development, l&d, learning officer, training, training and development, training & development, corporate training, professional development, Talent development, regional training, learning program, organizational development, organisational development, technical training, knoweldge, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Digital Transformation, Technology Transformation, Innovation, IT Transformation, Digital Operations, Transformation Program, Transformation Enablement, Digital Solutions, Digital Platform, Cloud Transformation, ERP Transformation, Digital Experience, Technology implementation, Digital Rollout,Enterprise Application, Business Applications, Application Support, Application Development, Saas Applications, Cloud Applications, enterprise software, applications operations, enterprise systems, application enablement, enterprise apps adoption, enterprise platform, ERP Applications, HCM Applications, Enterpise systems, business systems, Enterprise Software Product, Enterprise Applications Project, Applications Program, Applications Implementation, Applications Rollout, Application Lifecycle, SaaS Deployment Project, Oracle Applications, Workday Applications,Technology Change, Digital Adoption, Organizational Change, Technology Enablement, Technology Transformation, Software change, digital workflow, technology adoption, change management, change management program, digital change, Change, DAP, Digital Adoption, User adoption, Walkme, Pendo, Software adoption, Technology Adoption, Workforce enablement, Apty, Appcues, Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation, S4 HANA, Salesforce, OCM, Organizational Change Management, Digital Adoption Platform, product enablement, platform enablement, technology enablement, digital enablement, change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Salesforce, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, pendo, apty, walkme, Claims, Claims Operations, Claims L&D, Claims Technology, Claims Transformation, Claims Platform, Guidewire ClaimCenter, DuckCreek, Guidewire Cloud, Shared Service, Underwriting, Underwriting Operations, Underwriting L&D, Underwriting Technology, Underwriting Transformation, Underwriting Platform, Guidewire PolicyCenter, DuckCreek, Guidewire Cloud, Shared Service, UW Quality & Compliance, Guidewire BillingCenter, Billing Admin, Duck Creek, Sapiens, guidewire pronavigator, duckcreek, guidewire, guidewire pronavigator, Walkme, Dap, Digital Adoption Platform, Sap, SAP, Pendo, Enablenow,Salesforce, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, pendo, apty, walkme",
-        "sen":"Manager, senior manager, SR. manager",
-        "loc":"Mexico, Canada, United States",
-        "search_type":"only_jt"
-    },
-     "k3":{
-        "jt":"Learning and Development, Learning & Development, l&d, learning officer, training and development, training & development, corporate training, Talent development, regional training, learning program, organizational development, organisational development, technical training, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system, information technology application, IT Applications, information technology operations, business applications, Information systems, Business process improvement, Technology Transformation, Process excellence, business consulting, business excellence, business improvement, management consulting, business integration, process management, process improvement, strategy and digital initiatives,Enterprise Application, Business Systems, Saas Applications, Application Services, Business Applications,Change management, Digital Change, Digital Adoption, Organizational Change,DAP, Digital Adoption, Digital Adoption Platform, User adoption, Walkme, Pendo, Software adoption, Technology Adoption, Workforce enablement, Apty, Appcues, Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation, S4 HANA, SAP S/4 HANA, Salesforce, OCM, Organizational Change Management, product enablement, platform enablement, technology enablement, digital enablement, change enablement, transformation enablement, digital transformation enablement, digital transformation, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, Technology transformation, Epic, Veeva, Cerner, Claims, Claims Operations, Claims L&D, Claims Technology, Claims Transformation, Claims Platform, Guidewire ClaimCenter, DuckCreek, Guidewire Cloud, Shared Service, Underwriting, Underwriting Operations, Underwriting L&D, Underwriting Technology, Underwriting Transformation, Underwriting Platform, Guidewire PolicyCenter, DuckCreek, Guidewire Cloud, Shared Service, UW Quality & Compliance, Guidewire BillingCenter, Billing Admin, Duck Creek, Sapiens, guidewire pronavigator, duckcreek, guidewire, guidewire pronavigator",
-        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head",
-        "loc":"Mexico, Canada, United States",
-        "search_type":"all"
-    },
-     "k4":{
-        "jt":"IT infrastructure, IT service delivery, IT training, IT Enablement, IT Systems, enterprise systems, technology training, IT Implementation, IT Systems Deployment, IT Transition, IT Metrics and Reporting,Learning and Development, Learning & Development, l&d, learning officer, training and development, training & development, corporate training, Talent development, regional training, learning program, organizational development, organisational development, technical training, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Digital Transformation, Technology Transformation, IT Transformation, Digital Operations, Transformation Program, Transformation Enablement, Digital Solutions, Digital Platform, Cloud Transformation, ERP Transformation, Digital Experience, Technology implementation, Digital Rollout,Enterprise Application, Business Applications, Saas Applications, Cloud Applications, enterprise software, enterprise systems, application enablement, enterprise apps adoption, enterprise platform, ERP Applications, HCM Applications, Enterpise systems, business systems, Enterprise Software Product, Enterprise Applications Project, Applications Implementation, Applications Rollout, Application Lifecycle, SaaS Deployment Project, Oracle Applications, Workday Applications, Digital Adoption, Organizational Change, Technology Enablement, Technology Transformation, Software change, digital workflow, technology adoption, change management, change management program, digital change, DAP, Digital Adoption, User adoption, Walkme, Pendo, Software adoption, Technology Adoption, Workforce enablement, Apty, Appcues, Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Microsoft Transformation, S4 HANA, S/4 HANA, Salesforce, OCM, Organizational Change Management, Digital Adoption Platform, product enablement, platform enablement, technology enablement, digital enablement, change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Dynamics 365, SAP S4 HANA, SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, Epic, Veeva, Cerner, Claims, Claims Operations, Claims L&D, Claims Technology, Claims Transformation, Claims Platform, Guidewire ClaimCenter, DuckCreek, Guidewire Cloud, Shared Service, Underwriting, Underwriting Operations, Underwriting L&D, Underwriting Technology, Underwriting Transformation, Underwriting Platform, Guidewire PolicyCenter, DuckCreek, Guidewire Cloud, Shared Service, UW Quality & Compliance, Guidewire BillingCenter, Billing Admin, Duck Creek, Sapiens, guidewire pronavigator, duckcreek, guidewire, guidewire pronavigator",
-        "sen":"Manager, senior manager, SR. manager",
-        "loc":"Mexico, Canada, United States",
-        "search_type":"all"
-    },
-
-
-    
-}
+SEGMENTS: dict[str, dict[str, str]] = mrp_dict
 
 
 # -----------------------------
@@ -414,7 +386,7 @@ def load_row_search_inputs(csv_path: str) -> tuple[list[dict[str, Any]], list[st
     return rows, excluded_ids
 
 
-def fts_terms_clause(field: str, values: list[str]) -> dict[str, Any]:
+def keyword_or_phrase_search(field: str, values: list[str]) -> dict[str, Any]:
     clauses: list[dict[str, Any]] = []
     for raw in values:
         words = raw.split()
@@ -489,7 +461,7 @@ def build_person_search_dsl(
             text_constraints.append(  
                 {
                     "AND": [
-                        fts_terms_clause("experienceList.positionList['title']", segment_terms.jobs),
+                        keyword_or_phrase_search("experienceList.positionList['title']", segment_terms.jobs),
 
                         *exp,
                     ]
@@ -502,13 +474,13 @@ def build_person_search_dsl(
                         {
                             "OR": [
                             #  fts_terms_clause("about", segment_terms.jobs),
-                             fts_terms_clause(
+                             keyword_or_phrase_search(
                                 "experienceList.positionList['description']",
                                 segment_terms.jobs,
                             ),
 
                                 # fts_terms_clause("experienceList.positionList['title']", segment_terms.jobs),
-                                fts_terms_clause("headline", segment_terms.jobs),
+                                keyword_or_phrase_search("headline", segment_terms.jobs),
                             ],
                         },
                         *exp,  
@@ -520,7 +492,7 @@ def build_person_search_dsl(
         text_constraints.append(  
             {
                 "AND": [
-                    fts_terms_clause("experienceList.positionList['title']", segment_terms.seniority),
+                    keyword_or_phrase_search("experienceList.positionList['title']", segment_terms.seniority),
                     *exp,  
                 ]
             }
@@ -539,7 +511,7 @@ def build_person_search_dsl(
 
 def append_fts_clause(filters: list[dict[str, Any]], field: str, values: list[str]) -> None:
     if values:
-        filters.append(fts_terms_clause(field, values))
+        filters.append(keyword_or_phrase_search(field, values))
 
 
 def clean_nan_inf(value: Any) -> Any:
