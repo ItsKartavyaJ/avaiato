@@ -661,7 +661,7 @@ if run_button:
                     p["_library"] = run_id.split(":")[0]
                     p["_company_slug"] = slug
                 seg_results.extend(cleaned)
-                if len(items) + 1 < PAGE_LIMIT:
+                if len(items) < PAGE_LIMIT:
                     break
                 offset += PAGE_LIMIT
 

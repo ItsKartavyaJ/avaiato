@@ -32,7 +32,7 @@ MAX_OFFSET = 10000
 # note:search_type can have values "only_jt" or "all"
 # only_jt will apply job title filters only to the position title field,
 # while "all" will apply to title, description, headline, and about fields
-INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\Mansimar_Ayush Prospecting - Sheet1.csv"
+INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\input\Mansimar_Ayush Prospecting - Sheet1.csv"
 
 SEGMENTS: dict[str, dict[str, str]] = mrp_dict
 
@@ -288,8 +288,8 @@ def load_row_search_inputs(csv_path: str) -> tuple[list[dict[str, Any]], list[st
     jt_col = find_first_column(input_df, ["keywords"])
     # jt_col=input_df["Keywords"]
     sen_col = find_first_column(input_df, ["sen", "seniority"])
-    search_type_col = "all"
-    excluded_col = find_first_column(input_df, ["linkedin_id", "linke   dinid"])
+    search_type_col = find_first_column(input_df, ["search_type", "searchtype", "type"])
+    excluded_col = find_first_column(input_df, ["linkedin_id", "linkedinid"])
 
     if not slug_col:
         raise ValueError("Input CSV must contain a 'slug' column for run2().")
@@ -485,7 +485,7 @@ def fetch_all_people(
 
         results.extend(clean_nan_inf(page_items))
 
-        if len(page_items)+1 < limit:
+        if len(page_items) < limit:
             break
 
         offset += limit
@@ -513,8 +513,6 @@ def run() -> None:
 
     client = AviatoClient(token)
     company_slugs, excluded_linkedin_ids = load_company_inputs(INPUT_CSV)
-    excluded_linkedin_ids = []
-    company_slugs=["amazon","meta"]
 
     exclude_ids: list[str] = excluded_linkedin_ids.copy()
     run_date = datetime.now().strftime("%Y%m%d")

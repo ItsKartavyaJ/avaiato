@@ -32,8 +32,7 @@ MAX_OFFSET = 10000
 # note:search_type can have values "only_jt" or "all"
 # only_jt will apply job title filters only to the position title field,
 # while "all" will apply to title, description, headline, and about fields
-INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\ARPIT Copy of BFSI Pintel Accounts - Arpit - accounts.csv"
-# Chief Sales Officer, CSO, Chief Revenue O"fficer, CRO, Chief Commercial Officer, CCO, Chief Partnerships Officer, Chief Business Development Officer
+INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\input\ARPIT Copy of BFSI Pintel Accounts - Arpit - accounts.csv"
 SEGMENTS: dict[str, dict[str, str]] = mrp_dict
 
 
@@ -311,12 +310,7 @@ def load_company_inputs(csv_path: str) -> tuple[list[str], list[str]]:
     return company_slugs, excluded_ids
 
 
-def find_first_column(df: pd.DataFrame, candidates: list[str]) -> str | None:
-    normalized = {str(col).strip().lower(): str(col) for col in df.columns}
-    for candidate in candidates:
-        if candidate in normalized:
-            return normalized[candidate]
-    return None
+
 
 
 def slug_to_key(slug: str) -> str:
@@ -324,66 +318,7 @@ def slug_to_key(slug: str) -> str:
     return cleaned.strip("-") or "unknown-slug"
 
 
-def load_row_search_inputs(csv_path: str) -> tuple[list[dict[str, Any]], list[str]]:
-    input_path = Path(csv_path)
-    if not input_path.exists():
-        raise FileNotFoundError(f"Input file not found: {input_path}")
 
-    input_df = pd.read_csv(input_path)
-
-    slug_col = find_first_column(input_df, ["slug"])
-    region_col = find_first_column(input_df, ["region", "loc", "country", "countries"])
-    jt_col = find_first_column(input_df, ["keywords"])
-    # jt_col=input_df["Keywords"]
-    sen_col = find_first_column(input_df, ["sen", "seniority"])
-    search_type_col = "all"
-    excluded_col = find_first_column(input_df, ["linkedin_id", "linkedinid"])
-
-    if not slug_col:
-        raise ValueError("Input CSV must contain a 'slug' column for run2().")
-
-    rows: list[dict[str, Any]] = []
-    for idx, row in input_df.iterrows():
-        slug_raw = row.get(slug_col)
-        slug = "" if pd.isna(slug_raw) else str(slug_raw).strip()
-        if not slug:
-            continue
-
-        region_raw = row.get(region_col) if region_col else ""
-        jt_raw = row.get(jt_col) if jt_col else ""
-        sen_raw = row.get(sen_col) if sen_col else ""
-        search_type_raw = row.get(search_type_col) if search_type_col else "all"
-        raw_search_type = "" if pd.isna(search_type_raw) else str(search_type_raw).strip().lower()
-        normalized_search_type = "only_jt" if raw_search_type in {"only jt", "only_jt"} else "all"
-
-        segment_terms = SegmentTerms(
-            jobs=split_csv_values("" if pd.isna(jt_raw) else str(jt_raw)),
-            seniority=split_csv_values("" if pd.isna(sen_raw) else str(sen_raw)),
-            countries=split_csv_values("" if pd.isna(region_raw) else str(region_raw)),
-            search_type=normalized_search_type,
-        )
-
-        rows.append(
-            {
-                "row_number": idx + 1,
-                "slug": slug,
-                "segment_terms": segment_terms,
-            }
-        )
-
-    excluded_ids: list[str] = []
-    if excluded_col:
-        excluded_ids = (
-            input_df[excluded_col]
-            .dropna()
-            .astype(str)
-            .str.strip()
-            .loc[lambda s: s != ""]
-            .unique()
-            .tolist()
-        )
-
-    return rows, excluded_ids
 
 
 def keyword_or_phrase_search(field: str, values: list[str]) -> dict[str, Any]:
@@ -509,9 +444,7 @@ def build_person_search_dsl(
         }
     }
 
-def append_fts_clause(filters: list[dict[str, Any]], field: str, values: list[str]) -> None:
-    if values:
-        filters.append(keyword_or_phrase_search(field, values))
+
 
 
 def clean_nan_inf(value: Any) -> Any:

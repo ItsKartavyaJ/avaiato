@@ -31,11 +31,10 @@ MAX_OFFSET = 10000
 # while "all" will apply to title, description, headline, and about fields
 # only jt", "only_jt"
 
+# NOTE: Update these paths to point to your actual input CSV files
 INPUT_CSVs = [
-            #   r"C:\Users\karta\Desktop\pintel\aviato\Armaan - February - inputc1.1.csv",
-              r"C:\Users\karta\Desktop\pintel\aviato\Armaan - February - Input1.2.csv",
-            #   r"C:\Users\karta\Desktop\pintel\aviato\Armaan - February - input_c2.1.csv",]
-              r"C:\Users\karta\Desktop\pintel\aviato\Armaan - February - input_c2.2.csv"
+              r"C:\Users\karta\Desktop\pintel\aviato\input\Armaan - February - Input1.2.csv",
+              r"C:\Users\karta\Desktop\pintel\aviato\input\Armaan - February - input_c2.2.csv"
             ]
 
 
@@ -295,7 +294,7 @@ def load_company_inputs(csv_path: str) -> tuple[list[str], list[str]]:
             .loc[lambda s: s != ""]
             .unique()
             .tolist()
-    )
+        )
     return company_slugs, excluded_ids
 
 
@@ -334,15 +333,15 @@ def build_person_search_dsl(
 
     filters: list[dict[str, Any]] = []
 
-    # if excluded_linkedin_ids:
-    #     filters.append(
-            # {
-            #     "linkedinID": {
-            #         "operation": "notin",
-            #         "value": excluded_linkedin_ids,
-            #     }
-            # }
-    #     )
+    if excluded_linkedin_ids:
+        filters.append(
+            {
+                "linkedinID": {
+                    "operation": "notin",
+                    "value": excluded_linkedin_ids,
+                }
+            }
+        )
 
     if segment_terms.countries:
         filters.append(
@@ -473,7 +472,7 @@ def fetch_all_people(
 
         results.extend(clean_nan_inf(page_items))
 
-        if len(page_items)+1 < limit:
+        if len(page_items) < limit:
             break
 
         offset += limit
@@ -620,7 +619,6 @@ def run2() -> None:
     global LOG_DIR
     load_dotenv()
     token = os.getenv(API_TOKEN_ENV)
-    print(token)
     if not token:
         raise RuntimeError(f"Missing API token in env var '{API_TOKEN_ENV}'")
 
