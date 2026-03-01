@@ -26,13 +26,13 @@ import unicodedata
 # -----------------------------
 # User config
 # -----------------------------
-CAMPAIGN_NAME = "aarpit_v2"
+CAMPAIGN_NAME = "not_found_campaign_JT_only"
 MAX_OFFSET = 10000
 
 # note:search_type can have values "only_jt" or "all"
 # only_jt will apply job title filters only to the position title field,
 # while "all" will apply to title, description, headline, and about fields
-INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\input\ARPIT Copy of BFSI Pintel Accounts - Arpit - accounts.csv"
+INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\input\Copy of Account_NA_25 Feb - accounts not found.csv"
 SEGMENTS: dict[str, dict[str, str]] = mrp_dict
 
 

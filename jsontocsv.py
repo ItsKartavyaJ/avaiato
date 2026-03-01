@@ -62,6 +62,7 @@ def json_dir_to_csv(
                 "twitter": twitter,
                 "company_name": company_name,
                 "linkedin_id": linkedin.split("/")[-1] if linkedin else "",
+                "source_slug": clean(person.get("source_slug", "")),
             })
 
     # Write CSV (Excel-safe)
@@ -74,7 +75,8 @@ def json_dir_to_csv(
                 "linkedin",
                 "twitter",
                 "company_name",
-                "linkedin_id"
+                "linkedin_id",
+                "source_slug",
             ]
         )
         writer.writeheader()
