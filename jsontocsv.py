@@ -59,8 +59,8 @@ def json_dir_to_csv(
                 "person_name": clean(person.get("fullName", "")),
                 "location": clean(person.get("location", "")),
                 "linkedin": linkedin,
-                "twitter": twitter,
-                "company_name": company_name,
+                # "twitter": twitter,
+                # "company_name": company_name,
                 "linkedin_id": linkedin.split("/")[-1] if linkedin else "",
                 "source_slug": clean(person.get("source_slug", "")),
             })
@@ -73,8 +73,8 @@ def json_dir_to_csv(
                 "person_name",
                 "location",
                 "linkedin",
-                "twitter",
-                "company_name",
+                # "twitter",
+                # "company_name",
                 "linkedin_id",
                 "source_slug",
             ]

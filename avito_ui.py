@@ -72,16 +72,29 @@ class SegmentTerms:
 
 
 class RateLimiter:
-    def __init__(self, rate, per_seconds):
+    def __init__(self, rate, per_seconds, hourly_limit=900):
         self.rate = rate
         self.per_seconds = per_seconds
+        self.hourly_limit = hourly_limit
         self.tokens = float(rate)
         self.last_check = time.time()
         self.lock = threading.Lock()
+        self.request_timestamps = []
 
     def wait_for_slot(self):
         with self.lock:
             now = time.time()
+            window = 3600
+            self.request_timestamps = [t for t in self.request_timestamps if now - t < window]
+
+            if len(self.request_timestamps) >= self.hourly_limit:
+                oldest = self.request_timestamps[0]
+                sleep_for = window - (now - oldest) + 1
+                st.toast(f"⏳ Hourly limit reached, sleeping {sleep_for:.0f}s...", icon="⏳")
+                time.sleep(sleep_for)
+                now = time.time()
+                self.request_timestamps = [t for t in self.request_timestamps if now - t < window]
+
             elapsed = now - self.last_check
             self.tokens = min(self.rate, self.tokens + elapsed * (self.rate / self.per_seconds))
             if self.tokens < 1:
@@ -89,15 +102,17 @@ class RateLimiter:
                 self.tokens = 0
             else:
                 self.tokens -= 1
-            self.last_check = now
+            self.last_check = time.time()
+            self.request_timestamps.append(time.time())
 
 
 class AviatoClient:
-    def __init__(self, token):
-        self.rate_limiter = RateLimiter(RATE, PER_SECONDS)
+    def __init__(self, token, company_hourly_limit=500, person_hourly_limit=900):
+        self.company_limiter = RateLimiter(RATE, PER_SECONDS, hourly_limit=company_hourly_limit)
+        self.person_limiter  = RateLimiter(RATE, PER_SECONDS, hourly_limit=person_hourly_limit)
         self.session = requests.Session()
         self.session.headers.update({"Authorization": f"Bearer {token}", "Content-Type": "application/json"})
-        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504], allowed_methods=["POST"])
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[500, 502, 503, 504], allowed_methods=["POST"])
         adapter = HTTPAdapter(max_retries=retry, pool_connections=50, pool_maxsize=50)
         self.session.mount("https://", adapter)
         self.session.mount("http://", adapter)
@@ -107,7 +122,7 @@ class AviatoClient:
         slug = "".join(ch for ch in slug if unicodedata.category(ch)[0] != "C").strip()
         dsl = {"dsl": {"offset": 0, "limit": 250, "filters": [{"AND": [{"linkedinID": {"operation": "eq", "value": slug}}]}]}}
         try:
-            self.rate_limiter.wait_for_slot()
+            self.company_limiter.wait_for_slot()
             resp = self.session.post(COMPANY_SEARCH_URL, json=dsl, timeout=30)
             if resp.status_code == 204:
                 return None
@@ -119,11 +134,10 @@ class AviatoClient:
             return None
 
     def search_people_page(self, payload):
-        self.rate_limiter.wait_for_slot()
+        self.person_limiter.wait_for_slot()
         resp = self.session.post(PERSON_SEARCH_URL, json=payload, timeout=30)
         resp.raise_for_status()
         return resp.json().get("items", [])
-
 
 def split_csv_values(value):
     return [p.strip() for p in str(value).split(",") if p.strip()]
@@ -136,9 +150,7 @@ def keyword_or_phrase_search(field, values):
         if len(words) == 1:
             clauses.append({field: {"operation": "fts", "value": raw}})
         else:
-            clauses.append({"AND": {field: {"operation": "textcontains", "value":raw}}
-                                    # for w in words
-                                    })
+            clauses.append({field: {"operation": "textcontains", "value": raw}})
     return {"OR": clauses}
 
 
@@ -661,7 +673,7 @@ if run_button:
                     p["_library"] = run_id.split(":")[0]
                     p["_company_slug"] = slug
                 seg_results.extend(cleaned)
-                if len(items) < PAGE_LIMIT:
+                if len(items)+2 < PAGE_LIMIT:
                     break
                 offset += PAGE_LIMIT
 

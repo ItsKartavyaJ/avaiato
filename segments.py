@@ -58,3 +58,44 @@ arp_dict = {
         "search_type":"only_jt"
     },
 }
+
+shane={
+    "k1jt":{
+        "jt":"learning officer, training, training and development, training & development, corporate training, professional development, Talent development, regional training, learning program, organizational development, organisational development, technical training, knoweldge, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Information Officer, technology officer, IT, information technology, information technology officer, technology operations, information technology application, system operations, information technology operations, business applications, Information systems,process, Business process improvement, Technology Transformation, Process excellence, business consulting, business excellence, business improvement, management consulting, business integration, process management, process improvement, integration, strategy and digital initiatives,Enterprise Application, Business Systems, IT Applications, Saas Applications, Application Services, Business Applications, Technology Change, Digital Change,    User adoption,   Technology Adoption, Workforce enablement,   Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation,  Salesforce, OCM, Organizational   product enablement, platform enablement, technology enablement,  change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement,Salesforce, Dynamics 365,  SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365,   Technology transformation",
+        
+        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head, President",
+        
+        "loc":"United States, Canada, Mexico",
+        
+        "search_type":"only_jt",
+        
+    },
+    "k2jt":{
+        "jt":"IT, Information Technology, IT infrastructure, IT service delivery, IT training, IT Enablement, IT Systems, enterprise systems, technology training, IT Implementation, IT Systems Deployment, IT Transition, IT Metrics and Reporting,   learning officer, training, training and development, training & development, corporate training, professional development, Talent development, regional training, learning program, organizational development, organisational development, technical training, knoweldge, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Digital Transformation, Technology Transformation, Innovation, IT Transformation, Digital Operations, Transformation Program, Transformation Enablement, Digital Solutions, Digital Platform, Cloud Transformation,  Digital Experience, Technology implementation, Digital Rollout,Enterprise Application, Business Applications, Application Support, Application Development, Saas Applications, Cloud Applications, enterprise software, applications operations, enterprise systems, application enablement, enterprise apps adoption, enterprise platform, ERP Applications, HCM Applications, Enterpise systems, business systems, Enterprise Software Product, Enterprise Applications Project, Applications Program, Applications Implementation, Applications Rollout, Application Lifecycle, SaaS Deployment Project, Oracle Applications, Workday Applications,Technology Change,   Technology Enablement, Technology Transformation, Software change, digital workflow, technology adoption,  digital change, Change,   User adoption,    Technology Adoption, Workforce enablement,   Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation,  Salesforce, OCM, Organizational   product enablement, platform enablement, technology enablement,  change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Salesforce, Dynamics 365,  SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365",
+        
+        "sen":"Manager, senior manager, SR. manager",
+        
+        "loc":"United States",
+        
+        "search_type":"only_jt",
+        
+    },
+    "k1_head_wd":{
+        "jt":"learning officer, training and development, training & development, corporate training, Talent development, regional training, learning program, organizational development, organisational development, technical training, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system, information technology application, IT Applications, information technology operations, business applications, Information systems, Business process improvement, Technology Transformation, Process excellence, business consulting, business excellence, business improvement, management consulting, business integration, process management, process improvement, strategy and digital initiatives,Enterprise Application, Business Systems, Saas Applications, Application Services, Business Applications, Digital Change,     User adoption,    Technology Adoption, Workforce enablement,   Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Oracle, Microsoft Transformation,   Salesforce, OCM, Organizational  product enablement, platform enablement, technology enablement,  change enablement, transformation enablement, digital transformation enablement, digital transformation, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Dynamics 365,  SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365, Technology transformation",
+        
+        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head, President",
+        
+        "loc":"United States",
+
+        "search_type":"all",
+    },
+    "k2_head_wd":{
+        "jt":"IT infrastructure, IT service delivery, IT training, IT Enablement, IT Systems, enterprise systems, technology training, IT Implementation, IT Systems Deployment, IT Transition, IT Metrics and Reporting,   learning officer, training and development, training & development, corporate training, Talent development, regional training, learning program, organizational development, organisational development, technical training, user experience, learning experience, digital learning, learning and technology, learning & technology, lms, learning management system,Digital Transformation, Technology Transformation, IT Transformation, Digital Operations, Transformation Program, Transformation Enablement, Digital Solutions, Digital Platform, Cloud Transformation,  Digital Experience, Technology implementation, Digital Rollout,Enterprise Application, Business Applications, Saas Applications, Cloud Applications, enterprise software, enterprise systems, application enablement, enterprise apps adoption, enterprise platform, ERP Applications, HCM Applications, Enterpise systems, business systems, Enterprise Software Product, Enterprise Applications Project, Applications Implementation, Applications Rollout, Application Lifecycle, SaaS Deployment Project, Oracle Applications, Workday Applications,   Technology Enablement, Technology Transformation, Software change, digital workflow, technology adoption, digital change,   User adoption,    Technology Adoption, Workforce enablement,   Spekit, Process Enablement, Employee experience, Digital experience, ERP, SAP, Microsoft Transformation,  Salesforce, OCM, Organizational   product enablement, platform enablement, technology enablement,  change enablement, transformation enablement, digital transformation enablement, employee enablement, workforce enablement, frontline enablement, learning enablement, process enablement, Dynamics 365,  SAP Ariba, Workday, SuccessFactor, dynamics 365, MS dynamics 365, Microsoft dynamics 365",
+        
+        "sen":"Manager, senior manager, SR. manager",
+        
+        "loc":"United States",
+
+        "search_type":"all",
+    }
+}

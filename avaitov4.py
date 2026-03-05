@@ -18,7 +18,7 @@ from urllib3.util.retry import Retry
 
 from jsontocsv import json_dir_to_csv
 
-from segments import mrp_dict ,arp_dict
+from segments import mrp_dict ,arp_dict,shane
 
 import re
 import unicodedata
@@ -26,15 +26,34 @@ import unicodedata
 # -----------------------------
 # User config
 # -----------------------------
-CAMPAIGN_NAME = "not_found_campaign_JT_only"
+CAMPAIGN_NAME = "corestack_5032025"
 MAX_OFFSET = 10000
 
 # note:search_type can have values "only_jt" or "all"
 # only_jt will apply job title filters only to the position title field,
 # while "all" will apply to title, description, headline, and about fields
-INPUT_CSV = r"C:\Users\karta\Desktop\pintel\aviato\input\Copy of Account_NA_25 Feb - accounts not found.csv"
-SEGMENTS: dict[str, dict[str, str]] = mrp_dict
-
+INPUT_CSV = r"C:\Users\karta\Downloads\Corestack - IBM scraped list - Feb 18 - COMPANY LIST.csv"
+SEGMENTS: dict[str, dict[str, str]] = {
+    "k1":{
+        "jt":"Head of Partnerships, Head of Strategic Partnerships, Head of Channel Sales, Head of Channel Partnerships, Head of Channels, Head of Partner Sales, Head of Partner Programs, Head of Channel Development, Head of Partner Development, Partner Ecosystem, Ecosystem Partnerships, ISV Partnerships, Marketplace Partnerships, AWS Alliances, Azure Partnerships, GCP Partnerships, Digital Transformation Partnerships, Channel, Channel Sales, Channel Management, Channel Strategy, Channel Development, Channel Partnerships, Channel Programs, Channel Enablement, Channel Ecosystem, Indirect Channels, Distribution, Distribution Strategy, Partner Sales, Partner Management, Partner Strategy, Partner Development, Partner Programs, Partner Enablement, Partner Growth, Partner-Led Growth, Partner Operations, Partnerships, Strategic Partnerships, Alliances, Strategic Alliances, Global Alliances, Technology Alliances, Cloud Alliances, Cloud Partnerships, Chief Partnerships Officer, Partner Account, Channel Account, Client Partner, Revenue, Revenue Growth, Revenue Strategy, Sales, Global Sales, Regional Sales, Enterprise Sales, Strategic Sales, National Sales, International Sales, Head of Sales, Head of Global Sales, Head of Enterprise Sales, Chief Sales Officer, CSO, Chief Commercial Officer, CCO, Google Cloud partnerships, Google Cloud partner ecosystem, Independent Software Vendor partnerships, Head Partnerships, Head Strategic Partnerships, Head Channel Sales, Head Channel Partnerships, Head Channels, Head Partner Sales, Head Partner Programs, Head Channel Development, Head Partner Development, Head Sales, Head Global Sales, Head Enterprise Sales, Partnerships, Strategic Partnerships, Channel Sales, Channel Partnerships, Channels, Partner Sales, Partner Programs, Channel Development, Partner Development, Partner Ecosystem, Ecosystem Partnerships, ISV Partnerships, Marketplace Partnerships, AWS Alliances, Azure Partnerships, GCP Partnerships, Google Cloud Partnerships, Cloud Partnerships, Cloud Alliances, Digital Transformation Partnerships, Channel Management, Channel Strategy, Channel Programs, Channel Enablement, Channel Ecosystem, Indirect Channels, Distribution, Distribution Strategy, Partner Management, Partner Strategy, Partner Enablement, Partner Growth, Partner Led Growth, Partner Operations, Alliances, Strategic Alliances, Global Alliances, Technology Alliances, Chief Partnerships Officer, Head Partnerships, Head Strategic Partnerships, Head Channel Sales, Head Channel Partnerships, Head Channels, Head Partner Sales, Head Partner Programs, Head Channel Development, Head Partner Development, Chief Sales Officer, CSO, Chief Commercial Officer, CCO, Head Sales, Head Global Sales, Head Enterprise Sales, Revenue Strategy, Revenue Growth, Enterprise Sales, Strategic Sales, Global Sales, gcp , AWS",
+        
+        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head",
+        
+        "loc":"United States,China, Japan, South Korea, North Korea, Mongolia, Taiwan, Singapore, Malaysia, Indonesia, Thailand, Vietnam, Philippines, Myanmar, Cambodia, Laos, Brunei, Timor-Leste, India, Pakistan, Bangladesh, Sri Lanka, Nepal, Bhutan, Maldives, Afghanistan, Australia, New Zealand, Papua New Guinea, Fiji, Solomon Islands, Vanuatu, Samoa, Tonga, Kiribati, Micronesia, Palau, Marshall Islands, Nauru, Tuvalu,Australia, New Zealand, Singapore, India, Japan, South Korea, China, Hong Kong, Taiwan, Southeast Asia,Albania, Andorra, Armenia, Austria, Azerbaijan, Belarus, Belgium, Bosnia and Herzegovina, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Georgia, Germany, Greece, Hungary, Iceland, Ireland, Italy, Kazakhstan, Kosovo, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Moldova, Monaco, Montenegro, Netherlands, North Macedonia, Norway, Poland, Portugal, Romania, Russia, San Marino, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, Turkey, Ukraine, United Kingdom, Vatican City, Bahrain, Egypt, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Palestine, Qatar, Saudi Arabia, Syria, United Arab Emirates, Yemen, Algeria, Angola, Benin, Botswana, Burkina Faso, Burundi, Cabo Verde, Cameroon, Central African Republic, Chad, Comoros, Congo, Democratic Republic of the Congo, Djibouti, Equatorial Guinea, Eritrea, Eswatini, Ethiopia, Gabon, Gambia, Ghana, Guinea, Guinea-Bissau, Ivory Coast, Kenya, Lesotho, Liberia, Libya, Madagascar, Malawi, Mali, Mauritania, Mauritius, Morocco, Mozambique, Namibia, Niger, Nigeria, Rwanda, São Tomé and Príncipe, Senegal, Seychelles, Sierra Leone, Somalia, South Africa, South Sudan, Sudan, Tanzania, Togo, Tunisia, Uganda, Zambia, Zimbabwe",
+        
+        "search_type":"only_jt"
+    },
+    "k2":{
+        "jt":"Head of Partnerships, Head of Strategic Partnerships, Head of Channel Sales, Head of Channel Partnerships, Head of Channels, Head of Partner Sales, Head of Partner Programs, Head of Channel Development, Head of Partner Development, Partner Ecosystem, Ecosystem Partnerships, ISV Partnerships, Marketplace Partnerships, AWS Alliances, Azure Partnerships, GCP Partnerships, Digital Transformation Partnerships, Channel, Channel Sales, Channel Management, Channel Strategy, Channel Development, Channel Partnerships, Channel Programs, Channel Enablement, Channel Ecosystem, Indirect Channels, Distribution, Distribution Strategy, Partner Sales, Partner Management, Partner Strategy, Partner Development, Partner Programs, Partner Enablement, Partner Growth, Partner-Led Growth, Partner Operations, Partnerships, Strategic Partnerships, Alliances, Strategic Alliances, Global Alliances, Technology Alliances, Cloud Alliances, Cloud Partnerships, Chief Partnerships Officer, Partner Account, Channel Account, Client Partner, Revenue, Revenue Growth, Revenue Strategy, Sales, Global Sales, Regional Sales, Enterprise Sales, Strategic Sales, National Sales, International Sales, Head of Sales, Head of Global Sales, Head of Enterprise Sales, Chief Sales Officer, CSO, Chief Commercial Officer, CCO, Google Cloud partnerships, Google Cloud partner ecosystem, Independent Software Vendor partnerships, Head Partnerships, Head Strategic Partnerships, Head Channel Sales, Head Channel Partnerships, Head Channels, Head Partner Sales, Head Partner Programs, Head Channel Development, Head Partner Development, Head Sales, Head Global Sales, Head Enterprise Sales, Partnerships, Strategic Partnerships, Channel Sales, Channel Partnerships, Channels, Partner Sales, Partner Programs, Channel Development, Partner Development, Partner Ecosystem, Ecosystem Partnerships, ISV Partnerships, Marketplace Partnerships, AWS Alliances, Azure Partnerships, GCP Partnerships, Google Cloud Partnerships, Cloud Partnerships, Cloud Alliances, Digital Transformation Partnerships, Channel Management, Channel Strategy, Channel Programs, Channel Enablement, Channel Ecosystem, Indirect Channels, Distribution, Distribution Strategy, Partner Management, Partner Strategy, Partner Enablement, Partner Growth, Partner Led Growth, Partner Operations, Alliances, Strategic Alliances, Global Alliances, Technology Alliances, Chief Partnerships Officer, Head Partnerships, Head Strategic Partnerships, Head Channel Sales, Head Channel Partnerships, Head Channels, Head Partner Sales, Head Partner Programs, Head Channel Development, Head Partner Development, Chief Sales Officer, CSO, Chief Commercial Officer, CCO, Head Sales, Head Global Sales, Head Enterprise Sales, Revenue Strategy, Revenue Growth, Enterprise Sales, Strategic Sales, Global Sales, gcp , AWS",
+        
+        "sen":"Head,VP, Director, AVP, SVP, Vice President, Senior Vice President, Associate Vice President, Assistant Vice President, Executive Vice President, Senior Director, National Director, Executive Director, Global Director, Head of, Global Head",
+        
+        "loc":"United States,China, Japan, South Korea, North Korea, Mongolia, Taiwan, Singapore, Malaysia, Indonesia, Thailand, Vietnam, Philippines, Myanmar, Cambodia, Laos, Brunei, Timor-Leste, India, Pakistan, Bangladesh, Sri Lanka, Nepal, Bhutan, Maldives, Afghanistan, Australia, New Zealand, Papua New Guinea, Fiji, Solomon Islands, Vanuatu, Samoa, Tonga, Kiribati, Micronesia, Palau, Marshall Islands, Nauru, Tuvalu,Australia, New Zealand, Singapore, India, Japan, South Korea, China, Hong Kong, Taiwan, Southeast Asia,Albania, Andorra, Armenia, Austria, Azerbaijan, Belarus, Belgium, Bosnia and Herzegovina, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Georgia, Germany, Greece, Hungary, Iceland, Ireland, Italy, Kazakhstan, Kosovo, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Moldova, Monaco, Montenegro, Netherlands, North Macedonia, Norway, Poland, Portugal, Romania, Russia, San Marino, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, Turkey, Ukraine, United Kingdom, Vatican City, Bahrain, Egypt, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Palestine, Qatar, Saudi Arabia, Syria, United Arab Emirates, Yemen, Algeria, Angola, Benin, Botswana, Burkina Faso, Burundi, Cabo Verde, Cameroon, Central African Republic, Chad, Comoros, Congo, Democratic Republic of the Congo, Djibouti, Equatorial Guinea, Eritrea, Eswatini, Ethiopia, Gabon, Gambia, Ghana, Guinea, Guinea-Bissau, Ivory Coast, Kenya, Lesotho, Liberia, Libya, Madagascar, Malawi, Mali, Mauritania, Mauritius, Morocco, Mozambique, Namibia, Niger, Nigeria, Rwanda, São Tomé and Príncipe, Senegal, Seychelles, Sierra Leone, Somalia, South Africa, South Sudan, Sudan, Tanzania, Togo, Tunisia, Uganda, Zambia, Zimbabwe",
+        
+        "search_type":"all"
+    },
+        
+}
 
 # -----------------------------
 # Runtime config
@@ -60,60 +79,43 @@ class SegmentTerms:
 
 
 class RateLimiter:
-    def __init__(self, rate: int, per_seconds: int, hourly_limit: int = 900) -> None:
+    def __init__(self, rate: int, per_seconds: int, hourly_limit: int) -> None:
         self.rate = rate
         self.per_seconds = per_seconds
         self.hourly_limit = hourly_limit
         self.tokens = float(rate)
         self.last_check = time.time()
         self.lock = threading.Lock()
-
-        # Use a sliding window — store timestamp of each request
         self.request_timestamps: list[float] = []
 
     def wait_for_slot(self) -> None:
         with self.lock:
             now = time.time()
             window = 3600
-
             self.request_timestamps = [t for t in self.request_timestamps if now - t < window]
 
             if len(self.request_timestamps) >= self.hourly_limit:
                 oldest = self.request_timestamps[0]
                 sleep_for = window - (now - oldest) + 1
-
-                tqdm.write(f"Hourly limit reached. Sleeping {sleep_for:.1f}s until oldest request expires...")
-
-                slept = 0.0
-                while slept < sleep_for:
-                    chunk = min(60, sleep_for - slept)  # 1 min intervals
-                    time.sleep(chunk)
-                    slept += chunk
-                    remaining = sleep_for - slept
-                    if remaining > 0:
-                        mins, secs = divmod(int(remaining), 60)
-                        tqdm.write(f"  ⏳ {mins}m {secs}s remaining...")
-
+                tqdm.write(f"Hourly limit reached ({self.hourly_limit}/hr). Sleeping {sleep_for:.1f}s...")
                 now = time.time()
                 self.request_timestamps = [t for t in self.request_timestamps if now - t < window]
 
-            # ── Per-minute token bucket ──
             elapsed = now - self.last_check
             self.tokens = min(self.rate, self.tokens + elapsed * (self.rate / self.per_seconds))
-
             if self.tokens < 1:
                 sleep_for = (1 - self.tokens) * (self.per_seconds / self.rate)
                 time.sleep(sleep_for)
                 self.tokens = 0
             else:
                 self.tokens -= 1
-
             self.last_check = time.time()
             self.request_timestamps.append(time.time())
-
 class AviatoClient:
     def __init__(self, token: str) -> None:
-        self.rate_limiter = RateLimiter(RATE, PER_SECONDS)
+        self.rate_limiter = RateLimiter(RATE, PER_SECONDS, hourly_limit=900)
+        self.company_limiter = RateLimiter(RATE, PER_SECONDS, hourly_limit=900)
+        self.person_limiter = RateLimiter(RATE, PER_SECONDS, hourly_limit=900)
         self.cache = Cache(CACHE_DIR)
 
         self.session = requests.Session()
@@ -171,7 +173,7 @@ class AviatoClient:
         }
 
         try:
-            self.rate_limiter.wait_for_slot()
+            self.company_limiter.wait_for_slot()
             response = self.session.post(COMPANY_SEARCH_URL, json=dsl, timeout=30)
 
             if response.status_code == 429:
@@ -189,7 +191,7 @@ class AviatoClient:
                         tqdm.write(f"  ⏳ {mins}m {secs}s remaining (from Retry-After)...")
 
                 # retry with a fresh request
-                self.rate_limiter.wait_for_slot()
+                self.company_limiter.wait_for_slot()
                 response = self.session.post(COMPANY_SEARCH_URL, json=dsl, timeout=30)
 
             if response.status_code == 204:
@@ -217,7 +219,7 @@ class AviatoClient:
             return None
 
     def search_people_page(self, payload: dict[str, Any]) -> list[dict[str, Any]]:
-        self.rate_limiter.wait_for_slot()
+        self.person_limiter.wait_for_slot()
         response = self.session.post(PERSON_SEARCH_URL, json=payload, timeout=30)
         
         if response.status_code == 429:
@@ -235,7 +237,7 @@ class AviatoClient:
                     tqdm.write(f"  ⏳ {mins}m {secs}s remaining (from Retry-After)...")
             
             # retry once after waiting
-            self.rate_limiter.wait_for_slot()
+            self.person_limiter.wait_for_slot()
             response = self.session.post(PERSON_SEARCH_URL, json=payload, timeout=30)
         
         response.raise_for_status()
@@ -408,13 +410,13 @@ def build_person_search_dsl(
                     "AND": [
                         {
                             "OR": [
-                            #  fts_terms_clause("about", segment_terms.jobs),
-                             keyword_or_phrase_search(
-                                "experienceList.positionList['description']",
-                                segment_terms.jobs,
-                            ),
+                            #  keyword_or_phrase_search("about", segment_terms.jobs),
+                            #  keyword_or_phrase_search(
+                            #     "experienceList.positionList['description']",
+                            #     segment_terms.jobs,
+                            # ),
 
-                                # fts_terms_clause("experienceList.positionList['title']", segment_terms.jobs),
+                                # keyword_or_phrase_search("experienceList.positionList['title']", segment_terms.jobs),
                                 keyword_or_phrase_search("headline", segment_terms.jobs),
                             ],
                         },
@@ -500,7 +502,7 @@ def fetch_all_people(
 
         results.extend(clean_nan_inf(page_items))
 
-        if len(page_items) < limit:
+        if len(page_items)+2 < limit:
             break
 
         offset += limit

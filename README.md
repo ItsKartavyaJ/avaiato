@@ -5,7 +5,7 @@ Utilities for running Aviato people/company searches, managing segment dictionar
 ## Files in this repo
 
 - `avaitov4.py`: Main script for running company + people search flows and writing outputs.
-- `mrp.py`: Large segment dictionary (`mrp_dict`) used by search workflows.
+- `segments.py`: Large segment dictionary (`mrp_dict`) used by search workflows.
 - `jsontocsv.py`: Converts JSON result files into a flattened CSV.
 - `avito_ui.py`: Streamlit UI for running searches interactively.
 - `docs.md`: Aviato DSL reference notes.
